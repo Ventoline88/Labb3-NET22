@@ -35,7 +35,7 @@ namespace Labb3_NET22
             }
             else
             {
-                ButtonReturnToMainMenu.IsEnabled = true;
+                buttonReturnToMainMenu.IsEnabled = true;
             }
         }
 
@@ -44,7 +44,7 @@ namespace Labb3_NET22
         /// </summary>
         private void InitializeQuestionButtons()
         {
-            StackPanelAnswerButtons.Children.Clear();
+            stackPanelAnswerButtons.Children.Clear();
 
             Question currentQuestion = _model.CurrentQuestion;
 
@@ -55,7 +55,7 @@ namespace Labb3_NET22
                 answerButton.Tag = i;
                 answerButton.Click += ButtonAnswerQuestionClicked;
 
-                StackPanelAnswerButtons.Children.Add(answerButton);
+                stackPanelAnswerButtons.Children.Add(answerButton);
             }
         }
 
@@ -83,11 +83,12 @@ namespace Labb3_NET22
 
             if (_model.Quiz.GetRandomQuestionsRemaining() == 0)
             {
-                LabelQuestionStatement.Visibility = Visibility.Hidden;
-                LabelQuizComplete.Visibility = Visibility.Visible;
-                ImageQuestion.Visibility = Visibility.Hidden;
-                StackPanelAnswerButtons.Children.Clear();
-                ButtonReturnToMainMenu.IsEnabled = true;
+                labelQuestion.Visibility = Visibility.Hidden;
+                textBlockQuestionStatement.Visibility = Visibility.Hidden;
+                labelQuizComplete.Visibility = Visibility.Visible;
+                imageQuestion.Visibility = Visibility.Hidden;
+                stackPanelAnswerButtons.Children.Clear();
+                buttonReturnToMainMenu.IsEnabled = true;
             }
             else
             {

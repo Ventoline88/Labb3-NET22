@@ -13,8 +13,8 @@
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
-        <Label x:Name="LabelEditQuiz" Grid.Column="0" Grid.ColumnSpan="3" Content="Edit Quiz" FontSize="24" FontWeight="Bold" HorizontalAlignment="Center" Visibility="Hidden"/>
-        <Label x:Name="LabelCreateNewQuiz" Grid.Column="0" Grid.ColumnSpan="3" Content="Create New Quiz" FontSize="24" FontWeight="Bold" HorizontalAlignment="Center" Visibility="Hidden"/>
+        <Label x:Name="labelEditQuiz" Grid.Column="0" Grid.ColumnSpan="3" Content="Edit Quiz" FontSize="24" FontWeight="Bold" HorizontalAlignment="Center" Visibility="Hidden"/>
+        <Label x:Name="labelCreateNewQuiz" Grid.Column="0" Grid.ColumnSpan="3" Content="Create New Quiz" FontSize="24" FontWeight="Bold" HorizontalAlignment="Center" Visibility="Hidden"/>
 
         <StackPanel Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center">
             <StackPanel Orientation="Horizontal">
@@ -22,7 +22,7 @@
                 <TextBox x:Name="txtBoxQuizName" Width="150"/>
             </StackPanel>
             <Button Content="Confirm" Click="ButtonConfirmQuizClicked"/>
-            <Button x:Name="ButtonCancel" Content="Cancel" Click="ButtonCancelClicked"/>
+            <Button x:Name="buttonCancel" Content="Cancel" Click="ButtonCancelClicked"/>
         </StackPanel>
 
         <Grid Grid.Column="1">
@@ -44,7 +44,7 @@
             </Grid.RowDefinitions>
 
             <Label Grid.Row="0" Grid.ColumnSpan="3" Content="Question Text" HorizontalAlignment="Center" VerticalAlignment="Bottom"/>
-            <TextBox x:Name="txtBoxQuestionText" Grid.Row="1" Grid.ColumnSpan="3"/>
+            <TextBox x:Name="txtBoxQuestionText" Grid.Row="1" Grid.ColumnSpan="3" TextWrapping="Wrap"/>
 
             <Label Grid.Row="2" Grid.Column="0" Content="Answer 1:"/>
             <TextBox x:Name="txtBoxAnswer1" Grid.Row="2" Grid.Column="1" TextWrapping="Wrap"/>
@@ -59,10 +59,10 @@
             <RadioButton x:Name="radioBtnAnswer3" Grid.Row="4" Grid.Column="2" GroupName="AnswerGroup" Content="Correct answer"/>
 
             <Label Grid.Row="5" Content="Category:"/>
-            <ComboBox x:Name="ComboBoxCategories" Grid.Row="5" Grid.Column="1"/>
+            <ComboBox x:Name="comboBoxCategories" Grid.Row="5" Grid.Column="1"/>
 
             <Label Grid.Row="6" Content="Image path:"/>
-            <TextBox x:Name="TxtBoxImagePath" Grid.Row="6" Grid.Column="1" Grid.ColumnSpan="2"/>
+            <TextBox x:Name="txtBoxImagePath" Grid.Row="6" Grid.Column="1" Grid.ColumnSpan="2"/>
 
             <Grid Grid.Row="7" Grid.ColumnSpan="3">
                 <Grid.RowDefinitions>
@@ -72,8 +72,8 @@
                 </Grid.RowDefinitions>
 
                 <Button Grid.Row="0" Content="Add question" Click="ButtonAddQuestionClicked"/>
-                <Button x:Name="ButtonModifyQuestion" Grid.Row="1" Content="Modify Question" Click="ButtonModifyQuestionClicked" IsEnabled="False"/>
-                <Button x:Name="ButtonRemoveQuestion" Grid.Row="2" Content="Remove Question" Click="ButtonRemoveQuestionClicked" IsEnabled="False"/>
+                <Button x:Name="buttonModifyQuestion" Grid.Row="1" Content="Modify Question" Click="ButtonModifyQuestionClicked" IsEnabled="False"/>
+                <Button x:Name="buttonRemoveQuestion" Grid.Row="2" Content="Remove Question" Click="ButtonRemoveQuestionClicked" IsEnabled="False"/>
             </Grid>
 
         </Grid>
@@ -85,8 +85,9 @@
             </Grid.RowDefinitions>
 
             <Label Grid.Row="0" Content="Questions in quiz" HorizontalAlignment="Center"/>
-            <!--<StackPanel x:Name="stackPanelQuizQuestion" Grid.Row="1" Background="White"/>-->
-            <ListBox x:Name="LstBoxQuizQuestions" Grid.Row="1" SelectionChanged="QuestionChanged"/>
+            <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
+                <ListBox x:Name="lstBoxQuizQuestions" Grid.Row="1" SelectionChanged="QuestionChanged"/>
+            </ScrollViewer>
         </Grid>
 
     </Grid>

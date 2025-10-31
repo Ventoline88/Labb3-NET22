@@ -64,5 +64,6 @@ public enum Category
     Movie,
     Religion,
     Game,
-    Chemistry
+    Chemistry,
+    Literature
 }

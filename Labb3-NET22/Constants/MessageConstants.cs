@@ -47,6 +47,16 @@
         /// Message to display when the save file was not found.
         /// </summary>
         public const string MESSAGE_SAVE_FILE_NOT_FOUND = "Could not find any quiz data to load";
+        /// <summary>
+        /// Message to display when an error occures while saving the
+        /// quiz data to a JSON data file.
+        /// </summary>
+        public const string MESSAGE_ERROR_WHILE_SAVING_QUIZ_DATA = "Something went wrong while saving the quiz data.";
+        /// <summary>
+        /// Message to display when an error occures while reading the
+        /// quiz data JSON file.
+        /// </summary>
+        public const string MESSAGE_ERROR_WHILE_LOADING_QUIZ_DATA = "Something went wrong while loading the quiz data.";
 
         /// <summary>
         /// Message to display when saving quizzes.

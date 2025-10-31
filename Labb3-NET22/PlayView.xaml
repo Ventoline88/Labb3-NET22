@@ -32,21 +32,42 @@
             </Grid.RowDefinitions>
 
 
-            <Label x:Name="LabelQuestionCategory" Grid.Row="0" FontSize="14" FontWeight="Bold" Content="{Binding CurrentQuestion.Category}" ContentStringFormat="Category: {0}"/>
-            <Label x:Name="LabelPercentageCorrect" Grid.Row="1" FontSize="14" FontWeight="Bold" Content="{Binding PercentageCorrect}" ContentStringFormat="Percentage correct: {0}%"/>
-            <Label x:Name="LabelNumberCorrect" Grid.Row="2" FontSize="14" FontWeight="Bold" Content="{Binding NumberCorrectAnswers}" ContentStringFormat="Number of correct answers: {0}"/>
-            <Label x:Name="LabelQuestionsAnswered" Grid.Row="3" FontSize="14" FontWeight="Bold" Content="{Binding QuestionsAnswered}" ContentStringFormat="Total questions answered: {0}"/>
+            <Label x:Name="labelQuestionCategory" Grid.Row="0" FontSize="14" FontWeight="Bold" Content="{Binding CurrentQuestion.Category}" ContentStringFormat="Category: {0}"/>
+            <Label x:Name="labelPercentageCorrect" Grid.Row="1" FontSize="14" FontWeight="Bold" Content="{Binding PercentageCorrect}" ContentStringFormat="Percentage correct: {0}%"/>
+            <Label x:Name="labelNumberCorrect" Grid.Row="2" FontSize="14" FontWeight="Bold" Content="{Binding NumberCorrectAnswers}" ContentStringFormat="Number of correct answers: {0}"/>
+            <Label x:Name="labelQuestionsAnswered" Grid.Row="3" FontSize="14" FontWeight="Bold">
+                <Label.Content>
+                    <TextBlock>
+                        <TextBlock.Text>
+                            <MultiBinding StringFormat="Questions answered: {0}/{1}">
+                                <Binding Path="QuestionsAnswered"/>
+                                <Binding Path="Quiz.Questions.Count"/>
+                            </MultiBinding>
+                        </TextBlock.Text>
+                    </TextBlock>
+                </Label.Content>
+            </Label>
 
         </Grid>
 
-        <Label x:Name="LabelQuestionStatement" Grid.Row="1" Grid.ColumnSpan="3" Content="{Binding CurrentQuestion.Statement}" FontSize="24" FontWeight="Bold" HorizontalAlignment="Center" ContentStringFormat="Question: {0}"/>
-        <Label x:Name="LabelQuizComplete" Grid.Row="1" Grid.ColumnSpan="3" Content="QUIZ COMPLETED" FontSize="24" FontWeight="Bold" HorizontalAlignment="Center" Visibility="Hidden"/>
+        <Grid Grid.Row="1" Grid.ColumnSpan="3">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
 
-        <Image x:Name="ImageQuestion" Grid.Row="2" Grid.Column="1" Source="{Binding CurrentImage}" Stretch="Fill"/>
-        <ScrollViewer Grid.Row="3" Grid.Column="1">
-            <StackPanel x:Name="StackPanelAnswerButtons" Background="White"/>
+            <Label x:Name="labelQuestion" Grid.Row="0" Content="Question:" FontSize="20" FontWeight="Bold" HorizontalAlignment="Center"/>
+            <TextBlock x:Name="textBlockQuestionStatement" Grid.Row="1" Grid.ColumnSpan="3" HorizontalAlignment="Center" TextWrapping="Wrap">
+            <Run Text="{Binding CurrentQuestion.Statement}" FontSize="14" FontWeight="Bold"/>
+            </TextBlock>
+            <Label x:Name="labelQuizComplete" Grid.Row="1" Grid.ColumnSpan="3" Content="QUIZ COMPLETED" FontSize="24" FontWeight="Bold" HorizontalAlignment="Center" Visibility="Hidden"/>
+        </Grid>
+
+        <Image x:Name="imageQuestion" Grid.Row="2" Grid.Column="1" Source="{Binding CurrentImage}" Stretch="Fill"/>
+        <ScrollViewer Grid.Row="3" Grid.Column="1" VerticalScrollBarVisibility="Auto">
+            <StackPanel x:Name="stackPanelAnswerButtons" Background="White"/>
         </ScrollViewer>
 
-        <Button x:Name="ButtonReturnToMainMenu" Grid.Row="4" Grid.Column="1" Content="Return To Main Menu" Click="ButtonReturnToMainMenuClicked" IsEnabled="False"/>
+        <Button x:Name="buttonReturnToMainMenu" Grid.Row="4" Grid.Column="1" Content="Return To Main Menu" Click="ButtonReturnToMainMenuClicked" IsEnabled="False"/>
     </Grid>
 </UserControl>

@@ -1,5 +1,7 @@
 ﻿using Labb3_NET22.Constants;
 using Labb3_NET22.DataModels;
+using Microsoft.Win32;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -38,12 +40,14 @@ namespace Labb3_NET22
         {
             InitializeComponent();
 
-            LstBoxAvailableQuizzes.DisplayMemberPath = "Title";
-            LstBoxAvailableQuizzes.SelectedValuePath = "Questions";
-            LstBoxAvailableQuizzes.ItemsSource = _quizzes;
+            AddDefaultQuizIfNeeded();
 
-            LstBoxQuizQuestions.DisplayMemberPath = "Statement";
-            LstBoxQuizQuestions.ItemsSource = _questions;
+            lstBoxAvailableQuizzes.DisplayMemberPath = "Title";
+            lstBoxAvailableQuizzes.SelectedValuePath = "Questions";
+            lstBoxAvailableQuizzes.ItemsSource = _quizzes;
+
+            lstBoxQuizQuestions.DisplayMemberPath = "Statement";
+            lstBoxQuizQuestions.ItemsSource = _questions;
 
             InitializeCategoriesCheckBoxes();
         }
@@ -55,7 +59,7 @@ namespace Labb3_NET22
         /// <param name="e">The event.</param>
         private void ButtonPlayClicked(object sender, RoutedEventArgs e)
         {
-            Quiz selectedQuiz = (Quiz)LstBoxAvailableQuizzes.SelectedItem;
+            Quiz selectedQuiz = (Quiz)lstBoxAvailableQuizzes.SelectedItem;
 
             if (selectedQuiz == null)
             {
@@ -98,7 +102,7 @@ namespace Labb3_NET22
         {
             List<CheckBox> checkBoxes = new List<CheckBox>();
 
-            foreach (var child in StackPanelCategories.Children)
+            foreach (var child in wrapPanelCategories.Children)
             {
                 CheckBox checkBox = (CheckBox)child;
                 if (checkBox.IsChecked == true)
@@ -143,7 +147,7 @@ namespace Labb3_NET22
         /// <param name="e">The event</param>
         private void ButtonEditQuizClicked(object sender, RoutedEventArgs e)
         {
-            var selectedQuiz = (Quiz)LstBoxAvailableQuizzes.SelectedItem;
+            var selectedQuiz = (Quiz)lstBoxAvailableQuizzes.SelectedItem;
 
             if (selectedQuiz == null)
             {
@@ -163,7 +167,7 @@ namespace Labb3_NET22
         /// <param name="e">The event.</param>
         private void ButtonRemoveQuizClicked(object sender, RoutedEventArgs e)
         {
-            var selectedQuiz = (Quiz)LstBoxAvailableQuizzes.SelectedItem;
+            var selectedQuiz = (Quiz)lstBoxAvailableQuizzes.SelectedItem;
 
             if (selectedQuiz == null)
             {
@@ -171,12 +175,12 @@ namespace Labb3_NET22
             }
             else
             {
-                LstBoxAvailableQuizzes.SelectedItem = null;
-                LstBoxQuizQuestions.SelectedItem = null;
+                lstBoxAvailableQuizzes.SelectedItem = null;
+                lstBoxQuizQuestions.SelectedItem = null;
                 _quizzes.Remove(selectedQuiz);
                 _questions.Clear();
-                LstBoxAvailableQuizzes.Items.Refresh();
-                LstBoxQuizQuestions.Items.Refresh();
+                lstBoxAvailableQuizzes.Items.Refresh();
+                lstBoxQuizQuestions.Items.Refresh();
                 InitializeCategoriesCheckBoxes();
                 MessageBox.Show(MessageConstants.MESSAGE_QUIZ_REMOVED);
             }
@@ -202,9 +206,21 @@ namespace Labb3_NET22
         /// <param name="e">The event</param>
         private async void ButtonSaveQuizzesClicked(object sender, RoutedEventArgs e)
         {
-            Directory.CreateDirectory(@"C:\QuizData");
-            await File.WriteAllTextAsync(_fileName, JsonSerializer.Serialize(_quizzes));
-            MessageBox.Show(MessageConstants.MESSAGE_QUIZZES_SAVED);
+            var jsonOptions = new JsonSerializerOptions
+            {
+                WriteIndented = true
+            };
+
+            try
+            {
+                await File.WriteAllTextAsync(_fileName, JsonSerializer.Serialize(_quizzes, jsonOptions));
+                MessageBox.Show(MessageConstants.MESSAGE_QUIZZES_SAVED);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(MessageConstants.MESSAGE_ERROR_WHILE_SAVING_QUIZ_DATA);
+                MessageBox.Show(ex.Message);
+            }
         }
 
 
@@ -215,24 +231,49 @@ namespace Labb3_NET22
         /// <param name="e">The event</param>
         private async void ButtonLoadQuizzesClicked(object sender, RoutedEventArgs e)
         {
-            if (File.Exists(_fileName))
+            try
             {
-                _quizzes.Clear(); // Clears the quizzes to avoid loading the same quizzes several times.
-                using FileStream fileStream = File.OpenRead(_fileName); // Ensures that the file stream is closed at the end.
-                var loadedQuizzes = await JsonSerializer.DeserializeAsync<List<Quiz>>(fileStream);
-
-                foreach (Quiz q in loadedQuizzes)
+                OpenFileDialog openFileDialog = new OpenFileDialog()
                 {
-                    _quizzes.Add(q);
-                }
+                    FileName = ConfigurationConstants.SaveFileName,
+                    Filter = ConfigurationConstants.LOAD_DATA_DEFAULT_FILTER,
+                    Title = ConfigurationConstants.LOAD_DATA_DEFAULT_TITLE,
+                    InitialDirectory = ConfigurationConstants.DirectoryPath
+                };
 
-                LstBoxAvailableQuizzes.Items.Refresh();
-                InitializeCategoriesCheckBoxes();
-                MessageBox.Show(MessageConstants.MESSAGE_QUIZZES_LOADED);
+                if (openFileDialog.ShowDialog() == true)
+                {
+                    var filePath = openFileDialog.FileName;
+
+                    _quizzes.Clear(); // Clears the quizzes to avoid loading the same quizzes several times.
+                    List<Quiz>? loadedQuizzes = new List<Quiz>();
+
+                    using FileStream fileStream = File.OpenRead(filePath); // Ensures that the file stream is closed at the end.
+                    loadedQuizzes = await JsonSerializer.DeserializeAsync<List<Quiz>>(fileStream);
+
+                    if (loadedQuizzes != null)
+                    {
+                        foreach (Quiz q in loadedQuizzes)
+                        {
+                            _quizzes.Add(q);
+                        }
+                    }
+
+                    AddDefaultQuizIfNeeded();
+
+                    lstBoxAvailableQuizzes.Items.Refresh();
+                    InitializeCategoriesCheckBoxes();
+                    MessageBox.Show(MessageConstants.MESSAGE_QUIZZES_LOADED);
+                }
+                else
+                {
+                    MessageBox.Show(MessageConstants.MESSAGE_SAVE_FILE_NOT_FOUND);
+                }
             }
-            else
+            catch (Exception ex)
             {
-                MessageBox.Show(MessageConstants.MESSAGE_SAVE_FILE_NOT_FOUND);
+                MessageBox.Show(MessageConstants.MESSAGE_ERROR_WHILE_LOADING_QUIZ_DATA);
+                MessageBox.Show(ex.Message);
             }
         }
 
@@ -253,8 +294,8 @@ namespace Labb3_NET22
         /// </summary>
         private void InitializeCategoriesCheckBoxes()
         {
-            StackPanelCategories.Children.Clear();  // Clears the checkboxes from the stack panel to ensure that
-                                                    // the same categories are not loaded several times.
+            wrapPanelCategories.Children.Clear();  // Clears the checkboxes from the stack panel to ensure that
+                                                   // the same categories are not loaded several times.
             List<Category> availableCategories = new List<Category>();
 
             // Go through all the questions in all the quizzes and add
@@ -276,7 +317,7 @@ namespace Labb3_NET22
             {
                 CheckBox checkBox = new CheckBox();
                 checkBox.Content = category;
-                StackPanelCategories.Children.Add(checkBox);
+                wrapPanelCategories.Children.Add(checkBox);
             }
         }
 
@@ -287,11 +328,50 @@ namespace Labb3_NET22
         /// <param name="e">The evelnt.</param>
         private void QuizChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (LstBoxAvailableQuizzes.SelectedItem != null)
+            if (lstBoxAvailableQuizzes.SelectedItem != null)
             {
-                _questions = _quizzes[LstBoxAvailableQuizzes.SelectedIndex].Questions.ToList();
-                LstBoxQuizQuestions.ItemsSource = _questions;
+                _questions = _quizzes[lstBoxAvailableQuizzes.SelectedIndex].Questions.ToList();
+                lstBoxQuizQuestions.ItemsSource = _questions;
             }
+        }
+
+        /// <summary>
+        /// Adds the defaults quiz to the list of quizzes
+        /// if it is not already in the list.
+        /// Only adds the default quiz if there is no quiz with a title
+        /// that contains the default quiz name.
+        /// </summary>
+        private void AddDefaultQuizIfNeeded()
+        {
+            if (_quizzes.Count == 0)
+            {
+                AddDefaultQuiz();
+            }
+            else if (_quizzes.Count > 0)
+            {
+                var defaultQuizList = _quizzes.Where(q => q.Title.Contains(ConfigurationConstants.DEFAULT_QUIZ_TITLE));
+
+                if (defaultQuizList.Count() == 0)
+                {
+                    AddDefaultQuiz();
+                }
+            }
+        }
+
+        /// <summary>
+        /// Adds the default quiz to the list of quizzes.
+        /// </summary>
+        private void AddDefaultQuiz()
+        {
+            Quiz defaultQuiz = new Quiz();
+            defaultQuiz.Title = ConfigurationConstants.DEFAULT_QUIZ_TITLE;
+
+            foreach (Question question in ConfigurationConstants.DEFAULT_QUIZ_QUESTIONS)
+            {
+                defaultQuiz.AddQuestion(question);
+            }
+
+            _quizzes.Add(defaultQuiz);
         }
 
         /// <summary>

@@ -38,18 +38,18 @@ namespace Labb3_NET22
                 _quiz = quiz;
                 txtBoxQuizName.Text = _quiz.Title;
                 _mode = QuizModificationMode.Edit;
-                LabelEditQuiz.Visibility = Visibility.Visible;
+                labelEditQuiz.Visibility = Visibility.Visible;
 
                 // There is no functionality for discarding changes,
                 // so the cancel button should not be showing or be interactable.
-                ButtonCancel.IsEnabled = false;
-                ButtonCancel.Visibility = Visibility.Hidden;
+                buttonCancel.IsEnabled = false;
+                buttonCancel.Visibility = Visibility.Hidden;
             }
             else // Quiz doesn't exist, we want to create it.
             {
                 _quiz = new Quiz();
                 _mode = QuizModificationMode.Create;
-                LabelCreateNewQuiz.Visibility = Visibility.Visible;
+                labelCreateNewQuiz.Visibility = Visibility.Visible;
             }
 
             InitializeCategoryComboBox();
@@ -61,9 +61,9 @@ namespace Labb3_NET22
         /// </summary>
         private void InitializeQuestionListBox()
         {
-            LstBoxQuizQuestions.DisplayMemberPath = "Statement";
-            LstBoxQuizQuestions.SelectedValuePath = "Statement";
-            LstBoxQuizQuestions.ItemsSource = _quiz.Questions;
+            lstBoxQuizQuestions.DisplayMemberPath = "Statement";
+            lstBoxQuizQuestions.SelectedValuePath = "Statement";
+            lstBoxQuizQuestions.ItemsSource = _quiz.Questions;
         }
 
         /// <summary>
@@ -73,9 +73,9 @@ namespace Labb3_NET22
         {
             foreach (Category category in ConfigurationConstants.AVAILABLE_CATEGORIES)
             {
-                ComboBoxCategories.Items.Add(category);
+                comboBoxCategories.Items.Add(category);
             }
-            ComboBoxCategories.SelectedItem = Category.Other;
+            comboBoxCategories.SelectedItem = Category.Other;
         }
 
         /// <summary>
@@ -131,7 +131,7 @@ namespace Labb3_NET22
         /// <returns>True if there is at least on question in the quiz, false otherwise.</returns>
         private bool ValidateQuestions()
         {
-            return LstBoxQuizQuestions.Items.Count > 0;
+            return lstBoxQuizQuestions.Items.Count > 0;
         }
 
         /// <summary>
@@ -164,8 +164,8 @@ namespace Labb3_NET22
                 _quiz.AddQuestion(
                     txtBoxQuestionText.Text,
                     correctAnswerIndex,
-                    TxtBoxImagePath.Text,
-                    (Category)ComboBoxCategories.SelectedItem,
+                    txtBoxImagePath.Text,
+                    (Category)comboBoxCategories.SelectedItem,
                     txtBoxAnswer1.Text,
                     txtBoxAnswer2.Text,
                     txtBoxAnswer3.Text);
@@ -186,7 +186,7 @@ namespace Labb3_NET22
             {
                 ModifyQuestion(_currentQuestion);
                 _currentQuestion = null;
-                LstBoxQuizQuestions.SelectedItem = null;
+                lstBoxQuizQuestions.SelectedItem = null;
 
                 MessageBox.Show(MessageConstants.MESSAGE_QUESTION_MODIFIED);
                 ResetView();
@@ -211,7 +211,7 @@ namespace Labb3_NET22
             else
             {
                 int correctAnswerIndex = GetCorrectAnswerIndex();
-                Category category = (Category)ComboBoxCategories.SelectedItem;
+                Category category = (Category)comboBoxCategories.SelectedItem;
 
                 currentQuestion.Statement = txtBoxQuestionText.Text;
                 currentQuestion.Answers = new string[]
@@ -222,7 +222,7 @@ namespace Labb3_NET22
                 };
                 currentQuestion.CorrectAnswerIndex = correctAnswerIndex;
                 currentQuestion.Category = category;
-                currentQuestion.ImagePath = TxtBoxImagePath.Text;
+                currentQuestion.ImagePath = txtBoxImagePath.Text;
             }
         }
 
@@ -237,7 +237,7 @@ namespace Labb3_NET22
             {
                 RemoveQuestion(_currentQuestion);
                 _currentQuestion = null;
-                LstBoxQuizQuestions.SelectedItem = null;
+                lstBoxQuizQuestions.SelectedItem = null;
 
                 MessageBox.Show(MessageConstants.MESSAGE_QUESTION_REMOVED);
                 ResetView();
@@ -289,7 +289,7 @@ namespace Labb3_NET22
             ResetAnswerRadioButtons();
             ResetCategoryComboBox();
             ResetButtons();
-            LstBoxQuizQuestions.Items.Refresh();
+            lstBoxQuizQuestions.Items.Refresh();
         }
 
         /// <summary>
@@ -301,7 +301,7 @@ namespace Labb3_NET22
             txtBoxAnswer1.Text = string.Empty;
             txtBoxAnswer2.Text = string.Empty;
             txtBoxAnswer3.Text = string.Empty;
-            TxtBoxImagePath.Text = string.Empty;
+            txtBoxImagePath.Text = string.Empty;
         }
 
         /// <summary>
@@ -322,7 +322,7 @@ namespace Labb3_NET22
         /// </summary>
         private void ResetCategoryComboBox()
         {
-            ComboBoxCategories.SelectedItem = Category.Other;
+            comboBoxCategories.SelectedItem = Category.Other;
         }
 
         /// <summary>
@@ -331,8 +331,8 @@ namespace Labb3_NET22
         /// </summary>
         private void ResetButtons()
         {
-            ButtonModifyQuestion.IsEnabled = false;
-            ButtonRemoveQuestion.IsEnabled = false;
+            buttonModifyQuestion.IsEnabled = false;
+            buttonRemoveQuestion.IsEnabled = false;
         }
 
         /// <summary>
@@ -343,7 +343,7 @@ namespace Labb3_NET22
         /// <param name="e">The event.</param>
         private void QuestionChanged(object sender, SelectionChangedEventArgs e)
         {
-            _currentQuestion = (Question)LstBoxQuizQuestions.SelectedItem;
+            _currentQuestion = (Question)lstBoxQuizQuestions.SelectedItem;
 
             if (_currentQuestion != null)
             {
@@ -371,11 +371,11 @@ namespace Labb3_NET22
                         break;
                 }
 
-                ComboBoxCategories.SelectedItem = _currentQuestion.Category;
-                TxtBoxImagePath.Text = _currentQuestion.ImagePath;
+                comboBoxCategories.SelectedItem = _currentQuestion.Category;
+                txtBoxImagePath.Text = _currentQuestion.ImagePath;
 
-                ButtonModifyQuestion.IsEnabled = true;
-                ButtonRemoveQuestion.IsEnabled = true;
+                buttonModifyQuestion.IsEnabled = true;
+                buttonRemoveQuestion.IsEnabled = true;
             }
         }
 
