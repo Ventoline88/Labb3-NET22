@@ -46,8 +46,13 @@ namespace Labb3_NET22.DataModels
             SetUpQuestion();
         }
 
+        // The event that is raised when a property changes.
         public event PropertyChangedEventHandler PropertyChanged;
 
+        /// <summary>
+        /// Method to raise the property changed event.
+        /// </summary>
+        /// <param name="name">The name of the property that changed.</param>
         public void OnPropertyChanged([CallerMemberName] string name = "")
         {
             if (PropertyChanged != null)
@@ -71,11 +76,11 @@ namespace Labb3_NET22.DataModels
 
                 if (!File.Exists(CurrentQuestion.ImagePath))
                 {
-                    CurrentImage = new BitmapImage(new Uri("pack://application:,,,/Images/QuestionMark.jpg"));
+                    CurrentImage = new BitmapImage(new Uri("pack://application:,,,/Images/QuestionMark.jpg")); // Searches for the specified image in the current project, if the provided image path could not be resolved.
                 }
                 else
                 {
-                    CurrentImage = new BitmapImage(new Uri(CurrentQuestion.ImagePath));
+                    CurrentImage = new BitmapImage(new Uri(CurrentQuestion.ImagePath)); // Uses the provided image path if it could be resolved.
                 }
 
                 UpdateProperties();

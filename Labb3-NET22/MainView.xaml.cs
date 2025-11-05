@@ -25,10 +25,6 @@ namespace Labb3_NET22
         /// </summary>
         private List<Question> _questions = new List<Question>();
         /// <summary>
-        /// The path to the file where the data is saved.
-        /// </summary>
-        private string _fileName = ConfigurationConstants.SAVE_FILE_PATH;
-        /// <summary>
         /// List of categories that the user has checked.
         /// </summary>
         private List<Category> _checkedCategories = new List<Category>();
@@ -213,8 +209,25 @@ namespace Labb3_NET22
 
             try
             {
-                await File.WriteAllTextAsync(_fileName, JsonSerializer.Serialize(_quizzes, jsonOptions));
-                MessageBox.Show(MessageConstants.MESSAGE_QUIZZES_SAVED);
+                SaveFileDialog saveFileDialog = new SaveFileDialog()
+                {
+                    FileName = ConfigurationConstants.DEFAULT_SAVE_FILE_NAME,
+                    Filter = ConfigurationConstants.SAVE_LOAD_DATA_DEFAULT_FILTER,
+                    Title = ConfigurationConstants.SAVE_LOAD_DATA_DEFAULT_TITLE,
+                    InitialDirectory = ConfigurationConstants.DirectoryPath
+                };
+
+                if (saveFileDialog.ShowDialog() == true)
+                {
+                    var fileName = saveFileDialog.FileName;
+
+                    await File.WriteAllTextAsync(fileName, JsonSerializer.Serialize(_quizzes, jsonOptions));
+                    MessageBox.Show(string.Format(MessageConstants.MESSAGE_QUIZZES_SAVED, fileName));
+                }
+                else
+                {
+                    MessageBox.Show(MessageConstants.MESSAGE_DATA_NOT_SAVED);
+                }
             }
             catch (Exception ex)
             {
@@ -235,20 +248,20 @@ namespace Labb3_NET22
             {
                 OpenFileDialog openFileDialog = new OpenFileDialog()
                 {
-                    FileName = ConfigurationConstants.SaveFileName,
-                    Filter = ConfigurationConstants.LOAD_DATA_DEFAULT_FILTER,
-                    Title = ConfigurationConstants.LOAD_DATA_DEFAULT_TITLE,
+                    FileName = ConfigurationConstants.DEFAULT_SAVE_FILE_NAME,
+                    Filter = ConfigurationConstants.SAVE_LOAD_DATA_DEFAULT_FILTER,
+                    Title = ConfigurationConstants.SAVE_LOAD_DATA_DEFAULT_TITLE,
                     InitialDirectory = ConfigurationConstants.DirectoryPath
                 };
 
                 if (openFileDialog.ShowDialog() == true)
                 {
-                    var filePath = openFileDialog.FileName;
+                    var fileName = openFileDialog.FileName;
 
                     _quizzes.Clear(); // Clears the quizzes to avoid loading the same quizzes several times.
                     List<Quiz>? loadedQuizzes = new List<Quiz>();
 
-                    using FileStream fileStream = File.OpenRead(filePath); // Ensures that the file stream is closed at the end.
+                    using FileStream fileStream = File.OpenRead(fileName); // "Using" ensures that the file stream is closed at the end.
                     loadedQuizzes = await JsonSerializer.DeserializeAsync<List<Quiz>>(fileStream);
 
                     if (loadedQuizzes != null)
@@ -263,7 +276,7 @@ namespace Labb3_NET22
 
                     lstBoxAvailableQuizzes.Items.Refresh();
                     InitializeCategoriesCheckBoxes();
-                    MessageBox.Show(MessageConstants.MESSAGE_QUIZZES_LOADED);
+                    MessageBox.Show(string.Format(MessageConstants.MESSAGE_QUIZZES_LOADED, fileName));
                 }
                 else
                 {

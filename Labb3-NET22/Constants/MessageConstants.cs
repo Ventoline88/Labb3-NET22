@@ -44,6 +44,10 @@
         /// </summary>
         public const string MESSAGE_ANSWER_INCORRECT = "Incorrect";
         /// <summary>
+        /// Message to display when the data could not be saved.
+        /// </summary>
+        public const string MESSAGE_DATA_NOT_SAVED = "Could not save quiz data";
+        /// <summary>
         /// Message to display when the save file was not found.
         /// </summary>
         public const string MESSAGE_SAVE_FILE_NOT_FOUND = "Could not find any quiz data to load";
@@ -61,11 +65,11 @@
         /// <summary>
         /// Message to display when saving quizzes.
         /// </summary>
-        public static string MESSAGE_QUIZZES_SAVED = $"Quizzes saved to {ConfigurationConstants.SAVE_FILE_PATH}.";
+        public static string MESSAGE_QUIZZES_SAVED = "Quizzes saved to {0}.";
         /// <summary>
         /// Message to display when loading quizzes.
         /// </summary>
-        public static string MESSAGE_QUIZZES_LOADED = $"Quizzes loaded from {ConfigurationConstants.SAVE_FILE_PATH}.";
+        public static string MESSAGE_QUIZZES_LOADED = "Quizzes loaded from {0}.";
 
         /// <summary>
         /// Prompt to display getting the user to select a quiz to play.

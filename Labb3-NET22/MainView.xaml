@@ -17,9 +17,9 @@
         <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
             <Button Content="Play" Click="ButtonPlayClicked"/>
             <Button Content="Questions By Category" Click="ButtonQuestionsByCategoryClicked"/>
+            <Button Content="Create New Quiz" Click="ButtonCreateNewQuizClicked"/>
             <Button Content="Edit Quiz" Click="ButtonEditQuizClicked"/>
             <Button Content="Remove Quiz" Click="ButtonRemoveQuizClicked"/>
-            <Button Content="Create New Quiz" Click="ButtonCreateNewQuizClicked"/>
             <Button Content="Save Quizzes" Click="ButtonSaveQuizzesClicked"/>
             <Button Content="LoadQuizzes" Click="ButtonLoadQuizzesClicked"/>
             <Button Content="Exit" Click="ButtonExitClicked"/>

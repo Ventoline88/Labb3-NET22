@@ -11,15 +11,11 @@ namespace Labb3_NET22.Constants
         /// <summary>
         /// The name of the file where quizzes are saved.
         /// </summary>
-        public static string SaveFileName = "Quizzes.json";
+        public const string DEFAULT_SAVE_FILE_NAME = "Quizzes.json";
         /// <summary>
         /// The name of the directory where the save file exists.
         /// </summary>
         public static string DirectoryPath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
-        /// <summary>
-        /// Path to the file where quizzes are saved.
-        /// </summary>
-        public static string SAVE_FILE_PATH = @$"{DirectoryPath}\{SaveFileName}";
         /// <summary>
         /// The name of the quiz created when answering questions by categories.
         /// </summary>
@@ -28,11 +24,11 @@ namespace Labb3_NET22.Constants
         /// The default file types that the user is able to select
         /// when loading quiz data.
         /// </summary>
-        public const string LOAD_DATA_DEFAULT_FILTER = "JSON files (*.json)|*.json";
+        public const string SAVE_LOAD_DATA_DEFAULT_FILTER = "JSON files (*.json)|*.json";
         /// <summary>
         /// The default title of the dialog box when loading quiz data.
         /// </summary>
-        public const string LOAD_DATA_DEFAULT_TITLE = "Open Quiz Data";
+        public const string SAVE_LOAD_DATA_DEFAULT_TITLE = "Open Quiz Data";
         /// <summary>
         /// The name of the default quiz.
         /// </summary>

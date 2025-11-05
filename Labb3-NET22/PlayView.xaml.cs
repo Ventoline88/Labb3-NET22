@@ -81,6 +81,7 @@ namespace Labb3_NET22
                 MessageBox.Show(MessageConstants.MESSAGE_ANSWER_INCORRECT);
             }
 
+            // If no more questions remain, the quiz is completed.
             if (_model.Quiz.GetRandomQuestionsRemaining() == 0)
             {
                 labelQuestion.Visibility = Visibility.Hidden;
@@ -90,12 +91,13 @@ namespace Labb3_NET22
                 stackPanelAnswerButtons.Children.Clear();
                 buttonReturnToMainMenu.IsEnabled = true;
             }
-            else
+            else // Set up the next question if it exists
             {
                 _model.SetUpQuestion();
                 InitializeQuestionButtons();
             }
 
+            // Updates the displayed information, even after the last question is answered.
             _model.IncrementQuestionsAnswered();
             _model.UpdateScoreData();
             _model.UpdateProperties();
