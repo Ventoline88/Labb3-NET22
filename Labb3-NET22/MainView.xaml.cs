@@ -340,8 +340,8 @@ namespace Labb3_NET22
             {
                 CheckBox checkBox = new CheckBox();
                 checkBox.Content = category;
-                checkBox.Checked += UpdateQuestionsInCategories;
-                checkBox.Unchecked += UpdateQuestionsInCategories;
+                checkBox.Checked += UpdateQuestionsInCategories; // Adds a method that runs when the checkbox is checked.
+                checkBox.Unchecked += UpdateQuestionsInCategories; // Adds a method that runs when the checkbox is unchecked.
                 wrapPanelCategories.Children.Add(checkBox);
             }
         }
