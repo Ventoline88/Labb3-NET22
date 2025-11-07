@@ -52,6 +52,10 @@
         /// </summary>
         public const string MESSAGE_SAVE_FILE_NOT_FOUND = "Could not find any quiz data to load";
         /// <summary>
+        /// Message to display when there are no quizzes to save.
+        /// </summary>
+        public const string MESSAGE_NO_QUIZZES_TO_SAVE = "There are no quizzes to save.";
+        /// <summary>
         /// Message to display when an error occures while saving the
         /// quiz data to a JSON data file.
         /// </summary>

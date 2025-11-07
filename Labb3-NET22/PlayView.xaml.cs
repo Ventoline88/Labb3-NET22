@@ -1,5 +1,8 @@
 ﻿using Labb3_NET22.Constants;
 using Labb3_NET22.DataModels;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -46,15 +49,29 @@ namespace Labb3_NET22
         {
             stackPanelAnswerButtons.Children.Clear();
 
+            List<Button> answerButtons = new List<Button>();
+            Random random = new Random();
+
             Question currentQuestion = _model.CurrentQuestion;
 
+            // Creates all the answer buttons for the question.
             for (int i = 0; i < currentQuestion.Answers.Length; i++)
             {
                 Button answerButton = new Button();
+                answerButton.Height = 30;
                 answerButton.Content = currentQuestion.Answers[i];
                 answerButton.Tag = i;
                 answerButton.Click += ButtonAnswerQuestionClicked;
 
+                answerButtons.Add(answerButton);
+            }
+
+            // Adds the buttons to the stackpanel in a random order.
+            while (answerButtons.Count > 0)
+            {
+                int buttonIndex = random.Next(answerButtons.Count);
+                Button answerButton = answerButtons.ElementAt(buttonIndex);
+                answerButtons.Remove(answerButton);
                 stackPanelAnswerButtons.Children.Add(answerButton);
             }
         }

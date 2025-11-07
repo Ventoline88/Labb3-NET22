@@ -68,6 +68,6 @@
             <StackPanel x:Name="stackPanelAnswerButtons" Background="White"/>
         </ScrollViewer>
 
-        <Button x:Name="buttonReturnToMainMenu" Grid.Row="4" Grid.Column="1" Content="Return To Main Menu" Click="ButtonReturnToMainMenuClicked" IsEnabled="False"/>
+        <Button x:Name="buttonReturnToMainMenu" Grid.Row="4" Grid.Column="1" Content="Return To Main Menu" Click="ButtonReturnToMainMenuClicked" Height="30" IsEnabled="False"/>
     </Grid>
 </UserControl>

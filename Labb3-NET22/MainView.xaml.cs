@@ -28,6 +28,7 @@ namespace Labb3_NET22
         /// List of categories that the user has checked.
         /// </summary>
         private List<Category> _checkedCategories = new List<Category>();
+        private MainViewModel _mainViewModel = new MainViewModel();
 
         /// <summary>
         /// Creates a new main view.
@@ -35,17 +36,19 @@ namespace Labb3_NET22
         public MainView()
         {
             InitializeComponent();
+            DataContext = _mainViewModel;
 
             AddDefaultQuizIfNeeded();
 
             lstBoxAvailableQuizzes.DisplayMemberPath = "Title";
-            lstBoxAvailableQuizzes.SelectedValuePath = "Questions";
             lstBoxAvailableQuizzes.ItemsSource = _quizzes;
 
             lstBoxQuizQuestions.DisplayMemberPath = "Statement";
             lstBoxQuizQuestions.ItemsSource = _questions;
 
             InitializeCategoriesCheckBoxes();
+
+            Directory.CreateDirectory(ConfigurationConstants.DirectoryPath);
         }
 
         /// <summary>
@@ -213,9 +216,15 @@ namespace Labb3_NET22
                 {
                     FileName = ConfigurationConstants.DEFAULT_SAVE_FILE_NAME,
                     Filter = ConfigurationConstants.SAVE_LOAD_DATA_DEFAULT_FILTER,
-                    Title = ConfigurationConstants.SAVE_LOAD_DATA_DEFAULT_TITLE,
+                    Title = ConfigurationConstants.SAVE_DATA_DEFAULT_TITLE,
                     InitialDirectory = ConfigurationConstants.DirectoryPath
                 };
+
+                if (_quizzes.Count <= 0)
+                {
+                    MessageBox.Show(MessageConstants.MESSAGE_NO_QUIZZES_TO_SAVE);
+                    return;
+                }
 
                 if (saveFileDialog.ShowDialog() == true)
                 {
@@ -250,7 +259,7 @@ namespace Labb3_NET22
                 {
                     FileName = ConfigurationConstants.DEFAULT_SAVE_FILE_NAME,
                     Filter = ConfigurationConstants.SAVE_LOAD_DATA_DEFAULT_FILTER,
-                    Title = ConfigurationConstants.SAVE_LOAD_DATA_DEFAULT_TITLE,
+                    Title = ConfigurationConstants.LOAD_DATA_DEFAULT_TITLE,
                     InitialDirectory = ConfigurationConstants.DirectoryPath
                 };
 
@@ -276,6 +285,7 @@ namespace Labb3_NET22
 
                     lstBoxAvailableQuizzes.Items.Refresh();
                     InitializeCategoriesCheckBoxes();
+                    UpdateQuestionsInCategories(sender, e);
                     MessageBox.Show(string.Format(MessageConstants.MESSAGE_QUIZZES_LOADED, fileName));
                 }
                 else
@@ -330,8 +340,32 @@ namespace Labb3_NET22
             {
                 CheckBox checkBox = new CheckBox();
                 checkBox.Content = category;
+                checkBox.Checked += UpdateQuestionsInCategories;
+                checkBox.Unchecked += UpdateQuestionsInCategories;
                 wrapPanelCategories.Children.Add(checkBox);
             }
+        }
+
+        /// <summary>
+        /// Updates the number of questions that are in the selected categories.
+        /// </summary>
+        /// <param name="sender">The sender of the event.</param>
+        /// <param name="e">The event.</param>
+        private void UpdateQuestionsInCategories(object sender, RoutedEventArgs e)
+        {
+            List<Category> checkedCategories = new List<Category>();
+
+            // Finds all of the categories that are checked.
+            foreach (var checkbox in wrapPanelCategories.Children)
+            {
+                if (((CheckBox)checkbox).IsChecked == true)
+                {
+                    Category category = (Category)((CheckBox)checkbox).Content;
+                    checkedCategories.Add(category);
+                }
+            }
+
+            _mainViewModel.UpdateQuestionsInCategories(_quizzes, checkedCategories);
         }
 
         /// <summary>
@@ -343,8 +377,8 @@ namespace Labb3_NET22
         {
             if (lstBoxAvailableQuizzes.SelectedItem != null)
             {
-                _questions = _quizzes[lstBoxAvailableQuizzes.SelectedIndex].Questions.ToList();
-                lstBoxQuizQuestions.ItemsSource = _questions;
+                _questions = _quizzes[lstBoxAvailableQuizzes.SelectedIndex].Questions.ToList(); // Sets the current questions to the questions in the selected quiz.
+                lstBoxQuizQuestions.ItemsSource = _questions; // Update the question list box.
             }
         }
 

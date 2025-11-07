@@ -15,14 +15,14 @@
         <Label Content="Quiz Game" FontSize="24" FontWeight="Bold" HorizontalAlignment="Center"/>
 
         <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
-            <Button Content="Play" Click="ButtonPlayClicked"/>
-            <Button Content="Questions By Category" Click="ButtonQuestionsByCategoryClicked"/>
-            <Button Content="Create New Quiz" Click="ButtonCreateNewQuizClicked"/>
-            <Button Content="Edit Quiz" Click="ButtonEditQuizClicked"/>
-            <Button Content="Remove Quiz" Click="ButtonRemoveQuizClicked"/>
-            <Button Content="Save Quizzes" Click="ButtonSaveQuizzesClicked"/>
-            <Button Content="LoadQuizzes" Click="ButtonLoadQuizzesClicked"/>
-            <Button Content="Exit" Click="ButtonExitClicked"/>
+            <Button Content="Play" Click="ButtonPlayClicked" Height="30"/>
+            <Button Content="Questions By Category" Click="ButtonQuestionsByCategoryClicked" Height="30"/>
+            <Button Content="Create New Quiz" Click="ButtonCreateNewQuizClicked" Height="30"/>
+            <Button Content="Edit Quiz" Click="ButtonEditQuizClicked" Height="30"/>
+            <Button Content="Remove Quiz" Click="ButtonRemoveQuizClicked" Height="30"/>
+            <Button Content="Save Quizzes" Click="ButtonSaveQuizzesClicked" Height="30"/>
+            <Button Content="LoadQuizzes" Click="ButtonLoadQuizzesClicked" Height="30"/>
+            <Button Content="Exit" Click="ButtonExitClicked" Height="30"/>
         </StackPanel>
 
         <Grid Grid.Column="1">
@@ -57,11 +57,13 @@
             <Grid Grid.Row="1">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
 
-                <Label Grid.Row="0" Content="Available Categories" HorizontalAlignment="Center" FontWeight="Bold"/>
-                <TextBlock Grid.Row="1" 
+                <Label Grid.Row="0" Content="Available Categories" HorizontalAlignment="Center" FontSize="12" FontWeight="Bold"/>
+                <Label Grid.Row="1" Content="{Binding QuestionsInCheckedCategories}" HorizontalAlignment="Center" FontSize="10" FontWeight="Bold" ContentStringFormat="Questions in the selected categories: {0}"/>
+                <TextBlock Grid.Row="2" 
                            Text=
                            "Select one or more categories to have random questions of the selected categories shown when playing 'Questions By Category'. The questions and categories will be taken from the questions available in the created quizzes."
                            TextWrapping="Wrap"/>

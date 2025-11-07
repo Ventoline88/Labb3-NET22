@@ -432,6 +432,30 @@ namespace Labb3_NET22
                 return 2;
             }
         }
+
+        /// <summary>
+        /// Resets all the question data fields.
+        /// </summary>
+        /// <param name="sender">The sender of the event.</param>
+        /// <param name="e">The event.</param>
+        private void ButtonCancelModificationClicked(object sender, RoutedEventArgs e)
+        {
+            txtBoxQuestionText.Clear();
+            txtBoxAnswer1.Clear();
+            txtBoxAnswer2.Clear();
+            txtBoxAnswer3.Clear();
+
+            radioBtnAnswer1.IsChecked = true;
+            radioBtnAnswer2.IsChecked = false;
+            radioBtnAnswer3.IsChecked = false;
+
+            comboBoxCategories.SelectedItem = Category.Other;
+            txtBoxImagePath.Clear();
+
+            lstBoxQuizQuestions.SelectedItem = null;
+            buttonModifyQuestion.IsEnabled = false;
+            buttonRemoveQuestion.IsEnabled = false;
+        }
     }
 
     /// <summary>

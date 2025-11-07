@@ -8,7 +8,7 @@
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="auto"/>
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
@@ -21,8 +21,8 @@
                 <Label Content="Quiz Name:"/>
                 <TextBox x:Name="txtBoxQuizName" Width="150"/>
             </StackPanel>
-            <Button Content="Confirm" Click="ButtonConfirmQuizClicked"/>
-            <Button x:Name="buttonCancel" Content="Cancel" Click="ButtonCancelClicked"/>
+            <Button Content="Confirm" Click="ButtonConfirmQuizClicked" Height="30"/>
+            <Button x:Name="buttonCancel" Content="Cancel" Click="ButtonCancelClicked" Height="30"/>
         </StackPanel>
 
         <Grid Grid.Column="1">
@@ -40,7 +40,7 @@
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="auto"/>
                 <RowDefinition Height="auto"/>
-                <RowDefinition Height="*"/>
+                <RowDefinition Height="auto"/>
             </Grid.RowDefinitions>
 
             <Label Grid.Row="0" Grid.ColumnSpan="3" Content="Question Text" HorizontalAlignment="Center" VerticalAlignment="Bottom"/>
@@ -62,18 +62,21 @@
             <ComboBox x:Name="comboBoxCategories" Grid.Row="5" Grid.Column="1"/>
 
             <Label Grid.Row="6" Content="Image path:"/>
-            <TextBox x:Name="txtBoxImagePath" Grid.Row="6" Grid.Column="1" Grid.ColumnSpan="2"/>
+            <TextBox x:Name="txtBoxImagePath" Grid.Row="6" Grid.Column="1"/>
+            <TextBlock Grid.Row="6" Grid.Column="2" Text="Ex: C:\Folder\...\Image.jpg" FontSize="8" VerticalAlignment="Center"/>
 
             <Grid Grid.Row="7" Grid.ColumnSpan="3">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
 
-                <Button Grid.Row="0" Content="Add question" Click="ButtonAddQuestionClicked"/>
-                <Button x:Name="buttonModifyQuestion" Grid.Row="1" Content="Modify Question" Click="ButtonModifyQuestionClicked" IsEnabled="False"/>
-                <Button x:Name="buttonRemoveQuestion" Grid.Row="2" Content="Remove Question" Click="ButtonRemoveQuestionClicked" IsEnabled="False"/>
+                <Button Grid.Row="0" Content="Add question" Click="ButtonAddQuestionClicked" Height="25"/>
+                <Button x:Name="buttonModifyQuestion" Grid.Row="1" Content="Confirm Question Modification" Click="ButtonModifyQuestionClicked" Height="25" IsEnabled="False"/>
+                <Button x:Name="buttonRemoveQuestion" Grid.Row="2" Content="Remove Question" Click="ButtonRemoveQuestionClicked" Height="25" IsEnabled="False"/>
+                <Button x:Name="buttonCancelModification" Grid.Row="3" Content="Cancel Modification" Click="ButtonCancelModificationClicked" Height="25"/>
             </Grid>
 
         </Grid>
